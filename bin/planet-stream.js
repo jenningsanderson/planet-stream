@@ -3,6 +3,9 @@
 // start planet-stream
 var argv = require('minimist')(process.argv.slice(2));
 
+console.log("Does this work?")
+var fs = require("fs")
+
 var R = require('ramda');
 var planetstream = require('../')({
   verbose: argv.v,
@@ -40,5 +43,6 @@ planetstream.map(JSON.parse)
 // print out record
 .onValue(function (obj) {
   var payload = JSON.stringify(obj)
-  console.log(payload);
+  console.log(payload.length);
+  fs.write("/tmp/changeset.json",payload);
 });
