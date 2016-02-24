@@ -3,7 +3,7 @@
 // start planet-stream
 var argv = require('minimist')(process.argv.slice(2));
 
-console.log("Does this work?")
+console.log("Starting Planet Stream at: " + (new Date()).toString())
 var fs = require("fs")
 
 var R = require('ramda');
@@ -40,9 +40,13 @@ planetstream.map(JSON.parse)
     return data.hasOwnProperty('metadata');
   }
 })
+
 // print out record
 .onValue(function (obj) {
-  var payload = JSON.stringify(obj)
-  console.log(payload.length);
-  fs.write("/tmp/changeset.json",payload);
+  var id = obj.metadata.id;
+  console.log("Writing.. " + id);
+  fs.writeFile('/data/changeset-'+id+'.json', JSON.stringify(obj), function(err){
+    if (err) throw err;
+    console.log(id + ' saved!');
+  });
 });
